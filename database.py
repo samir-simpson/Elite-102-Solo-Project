@@ -28,29 +28,28 @@ def create_database():
 def register(username, pin): 
     con = sq.connect("banking.db")
     cur = con.cursor() 
-    #Registers the user into our new users table 
     try:
         hashed_password = generate_password_hash(pin)
         cur.execute("INSERT INTO users (username, pin) VALUES (?, ?)", (username, hashed_password))
+        user_id = cur.lastrowid  # Get the ID of the newly created user
+        cur.execute("INSERT INTO bank (user_id, balance) VALUES (?, ?)", (user_id, 0))  # Create bank account
         con.commit()
         return {"success": True, "message": "User registered successfully"} 
     except sq.IntegrityError:
-        return False
+        return {"success": False, "message": "Username already exists"}
     finally:
-        con.close() 
+        con.close()
+
 
 def verify(username, pin): 
     con = sq.connect("banking.db")
-    cur = con.cursor() 
-    
+    cur = con.cursor()
     try:
         cur.execute("SELECT user_id, pin FROM users WHERE username = ?", (username,))
         user = cur.fetchone()
-     
-    
-        if user and check_password_hash(user[1], pin):
-            return user[0]  
-        return None 
+        if user and check_password_hash(user[1], pin):  # Verify the hashed PIN
+            return user[0]  # Return the user_id
+        return None
     finally: 
         con.close()
 
