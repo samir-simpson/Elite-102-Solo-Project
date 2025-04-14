@@ -17,7 +17,8 @@ def create_database():
         CREATE TABLE IF NOT EXISTS bank (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
-            balance REAL NOT NULL DEFAULT 0,
+            balance REAL NOT NULL DEFAULT 0, 
+            FOREIGN KEY (user_id) REFERENCES users(user_id)
         )
     ''')  
     con.commit()

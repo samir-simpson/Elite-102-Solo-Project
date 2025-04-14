@@ -1,7 +1,8 @@
 import tkinter as tk 
 from tkinter import messagebox
 from database import register, verify, check_balance, create_database, deposit, withdraw, delete_account, modify_account 
-create_database
+create_database() # Create the database if it doesn't exist
+
 #This function will create the GUI for the banking app
 class BankingApp:
     def __init__(self, root):
@@ -157,6 +158,21 @@ class BankingApp:
             self.login_screen()
         else:
             messagebox.showerror("Error", result["message"])
+
+    def modify_account(self):
+        new_username = self.username_entry.get()
+        new_pin = self.pin_entry.get()
+
+        if not new_username or not new_pin:
+            messagebox.showerror("Error", "Both fields are required")
+            return
+
+        result = modify_account(self.user_id, new_username, new_pin)
+        if result["success"]:
+            messagebox.showinfo("Success", result["message"])
+            self.dashboard()
+        else:
+            messagebox.showerror("Error", "Failed to modify account")
 
     def clear_screen(self):
         for widget in self.root.winfo_children():
