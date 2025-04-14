@@ -12,17 +12,16 @@ def create_database():
             pin  INTEGER NOT NULL
         )
     ''')
-    table = '''
+
+    cur.execute('''
         CREATE TABLE IF NOT EXISTS bank (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             balance REAL NOT NULL DEFAULT 0,
         )
-    '''
-    cur.execute(table)  
+    ''')  
     con.commit()
     con.close()
-#(Its done in 2 different ways because I wanted to see if it would work, and it did)
 
 
 def register(username, pin): 
@@ -40,7 +39,7 @@ def register(username, pin):
         con.close() 
 
 def verify(username, pin): 
-    con = sq.connect("conversations.db")
+    con = sq.connect("banking.db")
     cur = con.cursor() 
     
     try:

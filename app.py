@@ -1,7 +1,7 @@
 import tkinter as tk 
 from tkinter import messagebox
-from database import register, verify, check_balance, create_database, deposit, withdraw, delete_account, modfify_account 
-create_database()
+from database import register, verify, check_balance, create_database, deposit, withdraw, delete_account, modify_account 
+create_database
 #This function will create the GUI for the banking app
 class BankingApp:
     def __init__(self, root):
